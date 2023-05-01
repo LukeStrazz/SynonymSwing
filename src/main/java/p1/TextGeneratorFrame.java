@@ -44,6 +44,15 @@ public class TextGeneratorFrame extends JFrame {
         JScrollPane scrollPane = new JScrollPane(textArea);
         add(scrollPane, BorderLayout.CENTER);
 
+        Path readMEPath = Paths.get("src/main/java/p1/data/readME2.txt");
+
+        try {
+            String readmeText = new String(Files.readAllBytes(readMEPath));
+            textArea.setText(readmeText);
+        } catch (IOException e) {
+            System.err.println("Error reading README file: " + e.getMessage());
+        }
+
 
         openItem.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
