@@ -1,23 +1,49 @@
 package p1;
 import java.util.*;
+import java.util.Iterator;
 
-public class BabyLinkedList {
-    BabyLink first;
+public class BabyLinkedList implements Iterable<String> {
+    private BabyLink first;
 
-    void insert(String word) {
-        BabyLink newLink = new BabyLink(word);
+    public BabyLinkedList() {
+        first = null;
+    }
+
+    public boolean isEmpty() {
+        return (first == null);
+    }
+
+    public void insert(String data) {
+        BabyLink newLink = new BabyLink(data);
         newLink.next = first;
         first = newLink;
     }
 
-    String getRandomWord() {
-        ArrayList<String> words = new ArrayList<>();
-        BabyLink current = first;
-        while (current != null) {
-            words.add(current.word);
-            current = current.next;
+    @Override
+    public Iterator<String> iterator() {
+        return new BabyListIterator();
+    }
+
+    private class BabyListIterator implements Iterator<String> {
+        private BabyLink current;
+
+        public BabyListIterator() {
+            current = first;
         }
-        int randomIndex = new Random().nextInt(words.size());
-        return words.get(randomIndex);
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public String next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            String data = current.data;
+            current = current.next;
+            return data;
+        }
     }
 }

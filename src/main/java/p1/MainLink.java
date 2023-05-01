@@ -1,12 +1,20 @@
 package p1;
 
+import java.util.Iterator;
+
 public class MainLink {
-    String keyword;
-    BabyLinkedList babyList;
-    MainLink next;
+    public String keyword;
+    public BabyLinkedList babyList;
+    public MainLink next;
 
     public MainLink(String keyword) {
         this.keyword = keyword;
-        this.babyList = new BabyLinkedList();
+        babyList = new BabyLinkedList();
+        next = null;
+    }
+
+    public Iterator<String> babyListIterator() {
+        return babyList.iterator();
     }
 }
+

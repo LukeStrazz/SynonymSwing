@@ -1,0 +1,2 @@
+word and stores word and run the text file containing the menu to create the
+MainLink instances for the generated

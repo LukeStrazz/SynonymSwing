@@ -1,20 +1,36 @@
 package p1;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.concurrent.*;
+
+import java.util.*;
+
 
 public class MainLinkedList {
-    private final ConcurrentHashMap<String, BabyLinkedList> mainList;
-    private Map<String, String> similarWordCache = new HashMap<>();
-
+    private MainLink head;
 
     public MainLinkedList() {
-        mainList = new ConcurrentHashMap<>();
+        head = null;
     }
 
     public void insert(String keyword, String word) {
-        mainList.computeIfAbsent(keyword, k -> new BabyLinkedList()).insert(word);
+        MainLink current = findMainLink(keyword);
+        if (current == null) {
+            MainLink newMainLink = new MainLink(keyword);
+            newMainLink.babyList.insert(word);
+            newMainLink.next = head;
+            head = newMainLink;
+        } else {
+            current.babyList.insert(word);
+        }
+    }
+
+    private MainLink findMainLink(String keyword) {
+        MainLink current = head;
+        while (current != null) {
+            if (current.keyword.equals(keyword)) {
+                return current;
+            }
+            current = current.next;
+        }
+        return null;
     }
 
     public String generateText(String startingWord, int wordCount) {
@@ -27,17 +43,22 @@ public class MainLinkedList {
             } else {
                 result.append(" ");
             }
-            BabyLinkedList babyList = mainList.get(currentWord);
-            if (babyList == null) {
-                if (!similarWordCache.containsKey(currentWord)) {
-                    similarWordCache.put(currentWord, findSimilarWord(currentWord));
+            MainLink currentMainLink = findMainLink(currentWord);
+            LinkedList<String> babyList = new LinkedList<>();
+            if (currentMainLink != null) {
+                Iterator<String> iterator = currentMainLink.babyListIterator();
+                while (iterator.hasNext()) {
+                    babyList.add(iterator.next());
                 }
-                currentWord = similarWordCache.get(currentWord);
+            }
+
+            if (babyList.isEmpty()) {
+                currentWord = findSimilarWord(currentWord);
                 if (currentWord == null) {
                     break;
                 }
             } else {
-                currentWord = babyList.getRandomWord();
+                currentWord = babyList.get((int) (Math.random() * babyList.size()));
             }
         }
         return result.toString().trim();
@@ -54,9 +75,10 @@ public class MainLinkedList {
                 (e1, e2) -> Integer.compare(e1.getValue(), e2.getValue())
         );
 
-        for (String key : mainList.keySet()) {
+        MainLink current = head;
+        while (current != null) {
             int commonChars = 0;
-            for (char c : key.toCharArray()) {
+            for (char c : current.keyword.toCharArray()) {
                 if (charFrequency.containsKey(c)) {
                     commonChars += charFrequency.get(c);
                 }
@@ -66,13 +88,13 @@ public class MainLinkedList {
                 if (candidates.size() == candidatesSize) {
                     candidates.poll();
                 }
-                candidates.offer(Map.entry(key, commonChars));
+                candidates.offer(Map.entry(current.keyword, commonChars));
             }
+
+            current = current.next;
         }
 
         String similarWord = candidates.peek().getKey();
         return similarWord;
     }
-
 }
-

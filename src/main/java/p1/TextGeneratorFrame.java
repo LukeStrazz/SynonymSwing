@@ -19,10 +19,12 @@ public class TextGeneratorFrame extends JFrame {
 
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
+        JMenuItem useREADME = new JMenuItem("Use README");
         JMenuItem useWarAndPeace = new JMenuItem("Use War and Peace");
         JMenuItem openItem = new JMenuItem("Open");
         fileMenu.add(openItem);
         fileMenu.add(useWarAndPeace);
+        fileMenu.add(useREADME);
         menuBar.add(fileMenu);
         setJMenuBar(menuBar);
 
@@ -78,9 +80,33 @@ public class TextGeneratorFrame extends JFrame {
                 protected Void doInBackground() throws Exception {
                     mainLinkedList = new MainLinkedList();
                     try {
-                        System.out.println("trying");
                         processFile(Paths.get("src/main/java/p1/data/warAndPeace.txt"));
-                        System.out.println("done");
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(TextGeneratorFrame.this, "Error reading file", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void done() {
+                    fileMenu.setEnabled(true);
+                    generateButton.setEnabled(true);
+                    startingWordField.setEnabled(true);
+                    wordCountField.setEnabled(true);
+                }
+            };
+            worker.execute();
+        });
+
+        useREADME.addActionListener(e -> {
+            fileMenu.setEnabled(false);
+            generateButton.setEnabled(false);
+            SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+                @Override
+                protected Void doInBackground() throws Exception {
+                    mainLinkedList = new MainLinkedList();
+                    try {
+                        processFile(Paths.get("src/main/java/p1/data/readME2.txt"));
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(TextGeneratorFrame.this, "Error reading file", "Error", JOptionPane.ERROR_MESSAGE);
                     }
