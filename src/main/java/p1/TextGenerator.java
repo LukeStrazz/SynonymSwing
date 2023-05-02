@@ -1,4 +1,5 @@
 package p1;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,7 +11,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -258,31 +258,4 @@ public class TextGenerator extends Application {
 
         return app;
     }
-
-//    private void processFile(Path filePath) throws IOException {
-//        Pattern wordPattern = Pattern.compile("\\b\\w+\\b");
-//        try (Stream<String> lines = Files.lines(filePath).parallel()) {
-//            lines.forEach(line -> {
-//                Matcher matcher = wordPattern.matcher(line);
-//                String prevWord = null;
-//                while (matcher.find()) {
-//                    String word = matcher.group();
-//                    if (prevWord != null) {
-//                        mainLinkedList.insert(prevWord, word);
-//                    }
-//                    prevWord = word;
-//                }
-//            });
-//        }
-//    }
-//
-//    private void saveGeneratedText(String text) {
-//        File outputDir = new File("output");
-//        outputDir.mkdirs();
-//        try (FileWriter writer = new FileWriter("output/output.txt")) {
-//            writer.write(text);
-//        } catch (IOException e) {
-//            System.err.println("Error writing to file: " + e.getMessage());
-//        }
-//    }
 }
