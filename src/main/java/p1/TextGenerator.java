@@ -82,13 +82,13 @@ public class TextGenerator extends Application {
 
         // Button actions
         returningUserButton.setOnAction(e -> {
-            appScene = new Scene(buildApp(), 900, 600);
+            appScene = new Scene(buildApp(), 700, 600);
             //appScene.getStylesheets().add(getClass().getResource("ApplicationStyle.css").toExternalForm());
             stage.setScene(appScene);
         });
 
         firstTimeUserButton.setOnAction(e -> {
-            instructionScene = new Scene(instructions(), 700, 400);
+            instructionScene = new Scene(instructions(), 700, 600);
             //instructionScene.getStylesheets().add(getClass().getResource("ApplicationStyle.css").toExternalForm());
             stage.setScene(instructionScene);
         });
