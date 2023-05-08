@@ -1,0 +1,80 @@
+.root {
+    -fx-font-family: "Arial";
+}
+
+.label {
+    -fx-font-size: 14;
+    -fx-text-fill: black;
+}
+
+.label:hover {
+    -fx-font-size: 14;
+    -fx-text-fill: grey;
+}
+
+
+.button {
+    -fx-background-color: #0078d7;
+    -fx-text-fill: white;
+    -fx-padding: 5px 15px;
+}
+
+.button:hover {
+    -fx-background-color: #005999;
+}
+
+.button:pressed {
+    -fx-background-color: #0A1172;
+}
+
+.text-field {
+    -fx-font-size: 14;
+    -fx-background-color: aliceblue;
+    -fx-border-color: #0A1172;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.text-area {
+    -fx-editable: false;
+    -fx-background-insets: 0;
+}
+
+
+.hbox {
+    -fx-padding: 10;
+    -fx-spacing: 10;
+}
+
+.menu-bar {
+    -fx-background-color: white;
+    -fx-padding: 5px;
+    -fx-border-color: #0A1172;
+    -fx-border-radius: 5px;
+}
+
+.menu {
+    -fx-font-size: 14;
+    -fx-background-color: white;
+    -fx-text-fill: #1E2022;
+}
+
+.menu-item {
+    -fx-font-size: 14;
+    -fx-background-color: white;
+    -fx-text-fill: #1E2022;
+    -fx-padding: 2px 5px;
+}
+
+.menu-item:hover {
+    -fx-background-color: #E8EAED;
+}
+
+.menu-item:pressed {
+    -fx-background-color: #005999;
+    -fx-text-fill: white;
+}
+
+.menu-button {
+    -fx-padding: 0px;
+}

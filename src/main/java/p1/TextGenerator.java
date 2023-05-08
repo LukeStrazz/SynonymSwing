@@ -5,10 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
@@ -25,7 +22,7 @@ public class TextGenerator extends Application {
 
     private Stage stage;
     private Scene welcomeScene, instructionScene, appScene;
-    private MainLinkedList mainLinkedList;
+    private MainHashTable mainHashTable;
 
     public static void main(String[] args) {
         launch(args);
@@ -35,11 +32,12 @@ public class TextGenerator extends Application {
     public void start(Stage primaryStage) {
         this.stage = primaryStage;
         Pane loginGui = welcome();
-        welcomeScene = new Scene(loginGui, 700, 600);
-
+        welcomeScene = new Scene(loginGui, 500, 450);
+        welcomeScene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
         primaryStage.setScene(welcomeScene);
         primaryStage.show();
     }
+
 
     private void processFile(Path filePath) throws IOException {
         Pattern wordPattern = Pattern.compile("\\b\\w+\\b");
@@ -50,7 +48,7 @@ public class TextGenerator extends Application {
                 while (matcher.find()) {
                     String word = matcher.group();
                     if (prevWord != null) {
-                        mainLinkedList.insert(prevWord, word);
+                        mainHashTable.insert(prevWord, word);
                     }
                     prevWord = word;
                 }
@@ -69,12 +67,12 @@ public class TextGenerator extends Application {
     }
 
     private Pane welcome() {
-        Pane welcome = new Pane();
+        Pane welcome = new StackPane(); // Use StackPane instead of Pane
         // Welcome Screen
         VBox welcomeScreen = new VBox(20);
         welcomeScreen.setAlignment(Pos.CENTER);
         welcomeScreen.setPadding(new Insets(10));
-        Label welcomeLabel = new Label("Welcome to Text Generator");
+        Label welcomeLabel = new Label("Welcome to Synonym Swing");
         welcomeLabel.setStyle("-fx-font-size: 20;");
         Button returningUserButton = new Button("Returning user");
         Button firstTimeUserButton = new Button("First-time user");
@@ -82,24 +80,27 @@ public class TextGenerator extends Application {
 
         // Button actions
         returningUserButton.setOnAction(e -> {
-            appScene = new Scene(buildApp(), 700, 600);
-            //appScene.getStylesheets().add(getClass().getResource("ApplicationStyle.css").toExternalForm());
+            appScene = new Scene(buildApp(), 500, 450);
+            appScene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
             stage.setScene(appScene);
         });
 
         firstTimeUserButton.setOnAction(e -> {
-            instructionScene = new Scene(instructions(), 700, 600);
-            //instructionScene.getStylesheets().add(getClass().getResource("ApplicationStyle.css").toExternalForm());
+            instructionScene = new Scene(instructions(), 500, 450);
+            instructionScene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
             stage.setScene(instructionScene);
         });
 
+        // Add VBox to the StackPane and center it
         welcome.getChildren().add(welcomeScreen);
+        StackPane.setAlignment(welcomeScreen, Pos.CENTER);
+
         return welcome;
     }
 
+
     private Pane instructions() {
         BorderPane instructions = new BorderPane();
-
         // Instructions
         VBox instructionBox = new VBox(10);
         instructionBox.setAlignment(Pos.CENTER);
@@ -114,8 +115,8 @@ public class TextGenerator extends Application {
 
         proceedButton.setOnAction(e -> {
             instructions.setVisible(false);
-            appScene = new Scene(buildApp(), 900, 600);
-            //appScene.getStylesheets().add(getClass().getResource("ApplicationStyle.css").toExternalForm());
+            appScene = new Scene(buildApp(), 500, 450);
+            appScene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
             stage.setScene(appScene);
         });
 
@@ -144,7 +145,7 @@ public class TextGenerator extends Application {
         inputPanel.getChildren().add(startingWordField);
         inputPanel.getChildren().add(new Label("Word count:"));
         wordCountField = new TextField();
-        wordCountField.setPrefWidth(50);
+        wordCountField.setPrefWidth(69);
         wordCountField.setDisable(true);
         inputPanel.getChildren().add(wordCountField);
         Button generateButton = new Button("Generate");
@@ -152,19 +153,17 @@ public class TextGenerator extends Application {
         inputPanel.getChildren().add(generateButton);
 
         textArea = new TextArea();
-        textArea.setPrefWidth(700);
-        textArea.setPrefHeight(500);
+        textArea.setPrefWidth(500);
+        textArea.setPrefHeight(369);
         textArea.setDisable(false); //scroll or not
         textArea.setWrapText(true);
-        ScrollPane scrollPane = new ScrollPane(textArea);
 
-        VBox root = new VBox(menuBar, inputPanel, scrollPane);
+        VBox root = new VBox(menuBar, inputPanel, textArea);
 
         BorderPane app = new BorderPane();
         app.setTop(menuBar);
         app.setCenter(inputPanel);
-        app.setBottom(scrollPane);
-
+        app.setBottom(textArea);
         Path readMEPath = Paths.get("src/main/java/p1/data/readME2.txt");
 
         try {
@@ -178,7 +177,7 @@ public class TextGenerator extends Application {
             FileChooser fileChooser = new FileChooser();
             File selectedFile = fileChooser.showOpenDialog(stage);
             if (selectedFile != null) {
-                mainLinkedList = new MainLinkedList();
+                mainHashTable = new MainHashTable();
                 try {
                     processFile(selectedFile.toPath());
 
@@ -197,7 +196,7 @@ public class TextGenerator extends Application {
         useWarAndPeace.setOnAction(e -> {
             fileMenu.setDisable(true);
             generateButton.setDisable(true);
-            mainLinkedList = new MainLinkedList();
+            mainHashTable = new MainHashTable();
             try {
                 Path filePath = Paths.get("src/main/java/p1/data/warAndPeace.txt");
                 processFile(filePath);
@@ -216,7 +215,7 @@ public class TextGenerator extends Application {
         useREADME.setOnAction(e -> {
             fileMenu.setDisable(true);
             generateButton.setDisable(true);
-            mainLinkedList = new MainLinkedList();
+             mainHashTable = new MainHashTable();
             try {
                 Path path = Paths.get("src/main/java/p1/data/readME2.txt");
                 processFile(path);
@@ -231,7 +230,6 @@ public class TextGenerator extends Application {
             }
         });
 
-
         generateButton.setOnAction(e -> {
             Boolean good2go = false;
             if (startingWordField.getText().isEmpty()) {
@@ -243,10 +241,10 @@ public class TextGenerator extends Application {
             } else {
                 good2go = true;
             }
-            if (mainLinkedList != null && good2go) {
+            if (mainHashTable != null && good2go) {
                 String startingWord = startingWordField.getText();
                 int wordCount = Integer.parseInt(wordCountField.getText());
-                String generatedText = mainLinkedList.generateText(startingWord, wordCount);
+                String generatedText = mainHashTable.generateText(startingWord, wordCount);
                 textArea.setText(generatedText);
                 saveGeneratedText(generatedText);
             }

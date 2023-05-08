@@ -1,21 +1,27 @@
 package p1;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class MainLinkedList {
-    private final ConcurrentHashMap<String, BabyLinkedList> mainList;
-    private Map<String, String> similarWordCache = new HashMap<>();
+public class MainHashTable {
+    private final HashMap<String, BabyLinkedList> mainTable;
+    private final ConcurrentHashMap<String, String> similarWordCache = new ConcurrentHashMap<>();
 
-
-    public MainLinkedList() {
-        mainList = new ConcurrentHashMap<>();
+    public MainHashTable() {
+        mainTable = new HashMap<>();
     }
 
     public void insert(String keyword, String word) {
-        mainList.computeIfAbsent(keyword, k -> new BabyLinkedList()).insert(word);
+        BabyLinkedList babyList = mainTable.get(keyword);
+        if (babyList == null) {
+            babyList = new BabyLinkedList();
+            mainTable.put(keyword, babyList);
+        }
+        babyList.insert(word);
     }
+
 
     public String generateText(String startingWord, int wordCount) {
         StringBuilder result = new StringBuilder();
@@ -27,7 +33,7 @@ public class MainLinkedList {
             } else {
                 result.append(" ");
             }
-            BabyLinkedList babyList = mainList.get(currentWord);
+            BabyLinkedList babyList = mainTable.get(currentWord);
             if (babyList == null) {
                 if (!similarWordCache.containsKey(currentWord)) {
                     similarWordCache.put(currentWord, findSimilarWord(currentWord));
@@ -54,7 +60,7 @@ public class MainLinkedList {
                 (e1, e2) -> Integer.compare(e1.getValue(), e2.getValue())
         );
 
-        for (String key : mainList.keySet()) {
+        for (String key : mainTable.keySet()) {
             int commonChars = 0;
             for (char c : key.toCharArray()) {
                 if (charFrequency.containsKey(c)) {
@@ -73,6 +79,4 @@ public class MainLinkedList {
         String similarWord = candidates.peek().getKey();
         return similarWord;
     }
-
 }
-
