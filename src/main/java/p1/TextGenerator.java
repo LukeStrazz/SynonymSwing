@@ -114,7 +114,7 @@ public class TextGenerator extends Application {
 
         proceedButton.setOnAction(e -> {
             instructions.setVisible(false);
-            appScene = new Scene(buildApp(), 900, 600);
+            appScene = new Scene(buildApp(), 700, 600);
             //appScene.getStylesheets().add(getClass().getResource("ApplicationStyle.css").toExternalForm());
             stage.setScene(appScene);
         });
