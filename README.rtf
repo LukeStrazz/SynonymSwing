@@ -9,13 +9,13 @@ Second: Enter a Starting Word and a desired Output length.
 Finally, enjoy generated output.
 
 SynonymSwing:
-SynonymSwing is a Java-based text generator that uses Concurrent Hash Maps to analyze a given text,
+SynonymSwing is a Java-based text generator that uses Hash Map to analyze a given text,
 Save and generate new paragraphs based on the frequency of word occurrences.
-It utilizes the LinkedList API to store unique keywords and their associated following words,
+It utilizes Maps, HashMaps, ConcurrentHashMaps, Priority Queue, Stream and Pattern to store unique keywords and their associated following words,
 allowing the user to generate random paragraphs with a similar structure to the analyzed text.
 
 Features:
-Analyzes input text and stores word occurrences in a linked list structure
+Analyzes input text and stores word occurrences in a "node" structure
 Generates new paragraphs based on the analyzed text
 Customizable starting word and paragraph length
 Uses a Swing-based GUI for user interaction
@@ -23,7 +23,7 @@ Outputs generated text to both the GUI and a text file
 Project Structure
 The project consists of the following classes:
 
-MainLinkedList: Contains all the MainLink instances and manages the insertion and generation of text.
+MainHashTable: Contains all the mainTable instances and manages the insertion and generation of text.
 MainLink: Represents a unique keyword and its associated BabyLinkedList.
 BabyLink: Represents a word that appears after a given keyword.
 BabyLinkedList: Contains all the BabyLink instances for a specific keyword.

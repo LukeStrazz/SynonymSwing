@@ -59,7 +59,7 @@ public class TextGenerator extends Application {
     private void saveGeneratedText(String text) {
         File outputDir = new File("output");
         outputDir.mkdirs();
-        try (FileWriter writer = new FileWriter("src/main/java/p1/output/output.txt")) {
+        try (FileWriter writer = new FileWriter("src/main/java/p1/Output/output.txt")) {
             writer.write(text);
         } catch (IOException e) {
             System.err.println("Error writing file: " + e.getMessage());
