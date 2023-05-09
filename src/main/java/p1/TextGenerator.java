@@ -35,6 +35,7 @@ public class TextGenerator extends Application {
         welcomeScene = new Scene(loginGui, 500, 450);
         welcomeScene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
         primaryStage.setScene(welcomeScene);
+        primaryStage.setTitle("Synonym - Swing");
         primaryStage.show();
     }
 
